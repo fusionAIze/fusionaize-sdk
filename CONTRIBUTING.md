@@ -37,10 +37,7 @@ Please read and follow our [Code of Conduct](./CODE_OF_CONDUCT.md). We are commi
 2. **Install dependencies**:
    ```bash
    pnpm install
-   pre-commit install        # enforce hooks before every commit — required
    ```
-
-   > `pre-commit install` installs git hooks that run the full hook suite before each commit. **Do not skip this step.**
 
 3. **Build all packages**:
    ```bash
