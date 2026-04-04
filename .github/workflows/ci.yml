@@ -1,0 +1,142 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check package boundaries
+        run: pnpm check:boundaries
+      - name: Check exports
+        run: pnpm check:exports
+      - name: Verify release state
+        run: pnpm check:release
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run lint
+        run: pnpm lint
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check formatting
+        run: pnpm exec biome format --check .
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run typecheck
+        run: pnpm typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run tests
+        run: pnpm test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm build
+
+  forbid-artifacts:
+    name: Forbid artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fail if forbidden paths are tracked
+        run: |
+          set -euo pipefail
+          if git ls-files | grep -qE '(\.ssh/|\.db($|-)|.*\.sqlite|.*\.log$)'; then
+            echo "ERROR: forbidden files are tracked:"
+            git ls-files | grep -E '(\.ssh/|\.db($|-)|.*\.sqlite|.*\.log$)' || true
+            exit 1
+          fi
+      - name: Fail if history contains forbidden blobs
+        run: |
+          set -euo pipefail
+          if git rev-list --objects --all | grep -qE '(\.ssh/|.*\.db($|-)|.*\.sqlite|.*\.log$)'; then
+            echo "ERROR: forbidden artifacts exist in history:"
+            git rev-list --objects --all | grep -E '(\.ssh/|.*\.db($|-)|.*\.sqlite|.*\.log$)' || true
+            exit 1
+          fi
+
+  gate:
+    name: CI Gate
+    runs-on: ubuntu-latest
+    needs: [test, lint, forbid-artifacts]
+    if: always()
+    steps:
+      - name: All required checks passed
+        run: |
+          if [[ "${{ needs.test.result }}"             != "success" ]] ||
+             [[ "${{ needs.lint.result }}"             != "success" ]] ||
+             [[ "${{ needs.forbid-artifacts.result }}" != "success" ]]; then
+            echo "::error::One or more required checks failed — merge blocked."
+            exit 1
+          fi
+          echo "All required checks passed."
