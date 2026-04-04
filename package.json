@@ -1,0 +1,29 @@
+{
+  "name": "fusionaize-sdk",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish",
+    "release:snapshot": "changeset publish --tag snapshot",
+    "check:exports": "node scripts/check-exports.mjs",
+    "check:boundaries": "node scripts/check-package-boundaries.mjs",
+    "check:release": "node scripts/verify-release-state.mjs"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.0",
+    "typescript": "^5.8.0",
+    "turbo": "^2.5.0",
+    "@biomejs/biome": "^1.8.0",
+    "vitest": "^2.0.0",
+    "@types/node": "^20.0.0"
+  }
+}

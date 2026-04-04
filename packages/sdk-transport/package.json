@@ -1,0 +1,31 @@
+{
+  "name": "@fusionaize/sdk-transport",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "lint": "biome check .",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@fusionaize/sdk-core": "workspace:*",
+    "@fusionaize/sdk-errors": "workspace:*",
+    "@fusionaize/sdk-auth": "workspace:*",
+    "@fusionaize/sdk-contracts": "workspace:*",
+    "@fusionaize/sdk-tracing": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

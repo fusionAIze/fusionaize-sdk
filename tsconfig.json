@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [],
+  "references": [
+    { "path": "packages/sdk-core" },
+    { "path": "packages/sdk-contracts" },
+    { "path": "packages/sdk-errors" },
+    { "path": "packages/sdk-config" },
+    { "path": "packages/sdk-auth" },
+    { "path": "packages/sdk-transport" },
+    { "path": "packages/sdk-tracing" },
+    { "path": "packages/sdk-testing" },
+    { "path": "packages/gate-client" },
+    { "path": "packages/gate-runtime" },
+    { "path": "packages/gate-control" }
+  ]
+}

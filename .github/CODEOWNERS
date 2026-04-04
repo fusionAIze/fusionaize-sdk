@@ -1,0 +1,40 @@
+# CODEOWNERS
+# This file defines ownership of different parts of the repository.
+# GitHub will automatically request reviews from these owners when PRs modify files in their areas.
+
+# Core foundation packages (owned by core team)
+/packages/sdk-core/           @fusionaize/core-team
+/packages/sdk-errors/         @fusionaize/core-team
+/packages/sdk-auth/           @fusionaize/core-team
+/packages/sdk-transport/      @fusionaize/core-team
+/packages/sdk-tracing/        @fusionaize/core-team
+/packages/sdk-config/         @fusionaize/core-team
+/packages/sdk-contracts/      @fusionaize/core-team
+
+# Service client packages (owned by service clients team)
+/packages/gate-client/        @fusionaize/service-clients-team
+/packages/gate-control/       @fusionaize/service-clients-team
+/packages/gate-runtime/       @fusionaize/service-clients-team
+
+# Testing infrastructure (shared ownership)
+/packages/sdk-testing/        @fusionaize/core-team @fusionaize/service-clients-team
+
+# Configuration and tooling (shared)
+/.changeset/                  @fusionaize/core-team
+/.github/                     @fusionaize/core-team
+/scripts/                     @fusionaize/core-team
+
+# Documentation (shared)
+/docs/                        @fusionaize/core-team @fusionaize/service-clients-team
+
+# Root configuration files
+/package.json                 @fusionaize/core-team
+/pnpm-workspace.yaml          @fusionaize/core-team
+/turbo.json                   @fusionaize/core-team
+/biome.json                   @fusionaize/core-team
+
+# Examples (service clients team)
+/examples/                    @fusionaize/service-clients-team
+
+# All other files fall back to core team for review
+*                             @fusionaize/core-team
