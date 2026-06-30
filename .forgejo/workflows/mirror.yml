@@ -2,18 +2,20 @@ name: Mirror to GitHub
 on:
   push:
     branches: ["**"]
-    tags: ["v*"]
+    tags: ["**"]
+  workflow_dispatch:
 jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - uses: https://github.com/actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Push to GitHub mirror
+      - name: Mirror all branches + tags to GitHub
         env:
           GH_MIRROR_TOKEN: ${{ secrets.GH_MIRROR_TOKEN }}
+          FORGEJO_TOKEN: ${{ github.token }}
         run: |
-          remote="https://x-access-token:${GH_MIRROR_TOKEN}@github.com/fusionAIze/fusionaize-sdk.git"
-          git push --force --prune "$remote" '+refs/heads/*:refs/heads/*'
-          git push --force "$remote" '+refs/tags/*:refs/tags/*'
+          # Full mirror clone from Forgejo (internal) -> all heads + tags present locally,
+          # then force-push every head + tag to GitHub. No --prune (additive/safe).
+          git clone --mirror "http://x-access-token:${FORGEJO_TOKEN}@forgejo:3000/${{ github.repository }}.git" m.git
+          cd m.git
+          git push --force "https://x-access-token:${GH_MIRROR_TOKEN}@github.com/${{ github.repository }}.git" \
+            '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
