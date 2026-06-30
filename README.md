@@ -7,6 +7,11 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![pnpm](https://img.shields.io/badge/pnpm-workspace-orange)](https://pnpm.io/)
 
+> [!NOTE]
+> **Canonical repository: self-hosted Forgejo** — `git.langevc.com/fusionaize/fusionaize-sdk`.
+> This GitHub copy is a synced mirror. Develop on Forgejo (see [Development](#development));
+> pull requests are opened there.
+
 The fusionAIze SDK is a shared, cross‑cutting TypeScript monorepo that provides:
 
 - **Core types and utilities** for the fusionAIze platform
@@ -76,8 +81,8 @@ async function main() {
 ### Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/fusionaize/fusionaize-sdk.git
+# Clone the canonical repository (self-hosted Forgejo)
+git clone git@git.langevc.com:fusionaize/fusionaize-sdk.git
 cd fusionaize-sdk
 
 # Install dependencies
