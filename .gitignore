@@ -48,3 +48,6 @@ Thumbs.db
 # Temporary
 tmp
 temp
+# SkillWeave runtime is local; only the helper is tracked.
+.skillweave/*
+!.skillweave/agents.md
