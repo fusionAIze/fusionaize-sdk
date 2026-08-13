@@ -15,7 +15,6 @@ on:
   pull_request:
     branches: [main]
     types: [labeled]
-    labels: ['snapshot-release']
 
 jobs:
   snapshot:
