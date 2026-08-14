@@ -18,7 +18,7 @@ on:
 
 jobs:
   snapshot:
-    if: ${{ github.server_url == 'https://github.com' }}
+    if: ${{ github.server_url == 'https://github.com' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.label.name == 'snapshot-release')) }}
     name: Create Snapshot Release
     runs-on: ubuntu-latest
     permissions:
